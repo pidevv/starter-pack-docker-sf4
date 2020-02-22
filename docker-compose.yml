@@ -10,8 +10,8 @@ services:
             - ${PHP_FPM_HOST_PORT}:${PHP_FPM_CONTAINER_PORT}
         volumes:
             - ./Symfony:/var/www/
-            - ./devops/docker/php-fpm/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-            - ./devops/docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
+            - ./devops/php-fpm/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./devops/php-fpm/php.ini:/usr/local/etc/php/php.ini
     apache:
         build: ./devops/webserver
         container_name: "${PROJECT_NAME}${PROJECT_SEPARATOR}-apache"
