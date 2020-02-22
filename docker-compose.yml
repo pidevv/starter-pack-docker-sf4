@@ -3,18 +3,20 @@ version: "3"
 services:
 
     php-fpm:
-        build: ./Dockerfiles/php-fpm
+        build: ./devops/php-fpm
         working_dir: /var/www/
         container_name: "${PROJECT_NAME}${PROJECT_SEPARATOR}php-fpm"
         ports:
             - ${PHP_FPM_HOST_PORT}:${PHP_FPM_CONTAINER_PORT}
         volumes:
             - ./Symfony:/var/www/
+            - ./devops/docker/php-fpm/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./devops/docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
     apache:
-        build: ./Dockerfiles/webserver
-        container_name: symfony-apache
+        build: ./devops/webserver
+        container_name: "${PROJECT_NAME}${PROJECT_SEPARATOR}-apache"
         volumes:
-            - ./Apache:/etc/apache2/sites-enabled
+            - ./devops/webserver/sites-enabled:/etc/apache2/sites-enabled
             - ./Symfony:/var/www/
         ports:
             - ${APACHE_HOST_PORT}:${APACHE_CONTAINER_PORT}
@@ -22,13 +24,13 @@ services:
         image:  mysql:5.7
         container_name: "${PROJECT_NAME}${PROJECT_SEPARATOR}mysql"
         environment:
-            MYSQL_ROOT_PASSWORD: pasforsymfony
-            MYSQL_DATABASE: pasforsymfony
-            MYSQL_USER: pasforsymfony
-            MYSQL_PASSWORD: pasforsymfony
+            MYSQL_ROOT_PASSWORD: pierredv
+            MYSQL_DATABASE: pierredv
+            MYSQL_USER: pierredv
+            MYSQL_PASSWORD: pierredv
         volumes:
-            - ./Mysql/data/mysql:/var/lib/mysql
-            - ./Logs/mysql:/var/log/mysql
+            - ./devops/mysql/data:/var/lib/mysql
+            - ./devops/mysql/logs:/var/log/mysql
         ports:
             - ${MYSQL_HOST_PORT}:${MYSQL_CONTAINER_VOLUME}
     phpmyadmin:
